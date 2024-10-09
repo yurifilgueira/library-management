@@ -24,8 +24,6 @@ public class UserService {
     public UserDto findById(String id) {
         var user = userRepository.findById(id).orElseThrow(NullPointerException::new);
 
-        System.out.println(user.getEmail());
-
         return MyModelMapper.convertValue(user, UserDto.class);
     }
 
@@ -38,7 +36,7 @@ public class UserService {
     public UserDto update(UserDto user) {
         var entity = userRepository.findById(user.getId()).orElseThrow(NullPointerException::new);
 
-        entity.setName(user.getEmail());
+        entity.setName(user.getName());
         entity.setEmail(user.getEmail());
 
         return MyModelMapper.convertValue(userRepository.save(entity), UserDto.class);

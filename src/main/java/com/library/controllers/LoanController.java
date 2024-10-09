@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/loans")
+@RequestMapping("v1/api/loans")
 public class LoanController {
 
     @Autowired
