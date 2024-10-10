@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User implements Serializable {
 
     @Serial
@@ -72,5 +73,15 @@ public class User implements Serializable {
 
     public Set<Loan> getLoans() {
         return Set.copyOf(loans);
+    }
+
+    public void addLoan(Loan loan) {
+        loans.add(loan);
+        loan.setUser(this);
+    }
+
+    public void removeLoan(Loan loan) {
+        loans.remove(loan);
+        loan.setUser(null);
     }
 }

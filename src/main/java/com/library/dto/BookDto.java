@@ -3,17 +3,20 @@ package com.library.dto;
 import java.io.Serializable;
 
 public class BookDto implements Serializable {
+
     private String id;
     private String title;
     private String author;
+    private Integer quantity;
 
     public BookDto() {
     }
 
-    public BookDto(String id, String title, String author) {
+    public BookDto(String id, String title, String author, Integer quantity) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.quantity = quantity;
     }
 
     public String getId() {
@@ -38,5 +41,13 @@ public class BookDto implements Serializable {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

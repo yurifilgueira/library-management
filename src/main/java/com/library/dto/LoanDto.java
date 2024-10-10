@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LoanDto implements Serializable {
+
     private String id;
     private UserDto user;
     private BookDto book;

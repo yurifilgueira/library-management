@@ -30,6 +30,7 @@ public class UserService {
     public UserDto save(UserDto user) {
 
         var entity = MyModelMapper.convertValue(user, User.class);
+        entity.setPassword("123");
         return MyModelMapper.convertValue(userRepository.save(entity), UserDto.class);
     }
 
@@ -42,7 +43,9 @@ public class UserService {
         return MyModelMapper.convertValue(userRepository.save(entity), UserDto.class);
     }
 
-    public void deleteById(String id) {
-        userRepository.deleteById(id);
+    public void delete(String id) {
+
+        var entity = userRepository.findById(id).orElseThrow(NullPointerException::new);
+        userRepository.delete(entity);
     }
 }

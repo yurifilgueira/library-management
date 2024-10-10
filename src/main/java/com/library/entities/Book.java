@@ -72,4 +72,14 @@ public class Book implements Serializable {
     public Set<Loan> getLoans() {
         return Set.copyOf(loans);
     }
+
+    public void addLoan(Loan loan) {
+        loans.add(loan);
+        loan.setBook(this);
+    }
+
+    public void removeLoan(Loan loan) {
+        loans.remove(loan);
+        loan.setBook(null);
+    }
 }

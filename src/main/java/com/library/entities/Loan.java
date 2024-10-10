@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Table
 public class Loan implements Serializable {
 
     @Serial
