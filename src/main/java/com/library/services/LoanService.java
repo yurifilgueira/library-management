@@ -37,6 +37,14 @@ public class LoanService {
         return MyModelMapper.convertValue(loan, LoanDto.class);
     }
 
+    public List<LoanDto> findLoansByUserId(String id) {
+        return MyModelMapper.convertList(loanRepository.findByUserId(id), LoanDto.class);
+    }
+
+    public List<LoanDto> findLoansByBookId(String id) {
+        return MyModelMapper.convertList(loanRepository.findByBookId(id), LoanDto.class);
+    }
+
     @Transactional
     public LoanDto save(LoanDto dto) {
 

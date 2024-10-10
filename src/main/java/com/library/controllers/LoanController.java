@@ -28,6 +28,16 @@ public class LoanController {
         return ResponseEntity.ok(loan);
     }
 
+    @GetMapping("/users/{id}")
+    public List<LoanDto> findLoansByUserId(@PathVariable String id) {
+        return loanService.findLoansByUserId(id);
+    }
+
+    @GetMapping("/books/{id}")
+    public List<LoanDto> findLoansByBookId(@PathVariable String id) {
+        return loanService.findLoansByBookId(id);
+    }
+
     @PostMapping
     public ResponseEntity<LoanDto> create(@RequestBody LoanDto loan) {
 
