@@ -1,10 +1,16 @@
 package com.library.services;
 
-import com.library.dto.UserDto;
-import com.library.entities.User;
+import com.library.entities.dto.reponses.LoginResponseDto;
+import com.library.entities.dto.requests.UpdateUserRequestDto;
+import com.library.entities.dto.UserDto;
+import com.library.entities.model.User;
+import com.library.exceptions.ObjectNotFoundException;
+import com.library.jwt.JwtTokenProvider;
 import com.library.modelMapper.MyModelMapper;
 import com.library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +20,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AuthServices authServices;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     public List<UserDto> findAll() {
         var users = userRepository.findAll();
@@ -22,30 +32,38 @@ public class UserService {
     }
 
     public UserDto findById(String id) {
-        var user = userRepository.findById(id).orElseThrow(NullPointerException::new);
+        var user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
         return MyModelMapper.convertValue(user, UserDto.class);
     }
 
-    public UserDto save(UserDto user) {
+    public ResponseEntity<?> update(UpdateUserRequestDto data) {
+        User user = userRepository.findById(data.id()).orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
-        var entity = MyModelMapper.convertValue(user, User.class);
-        entity.setPassword("123");
-        return MyModelMapper.convertValue(userRepository.save(entity), UserDto.class);
-    }
+        user.setName(data.name());
+        user.setEmail(data.email());
 
-    public UserDto update(UserDto user) {
-        var entity = userRepository.findById(user.getId()).orElseThrow(NullPointerException::new);
+        var password = authServices.encodePassword(data.newPassword());
+        user.setPassword(password);
 
-        entity.setName(user.getName());
-        entity.setEmail(user.getEmail());
+        user = userRepository.save(user);
+        try {
+            var loginResponseDto = new LoginResponseDto();
 
-        return MyModelMapper.convertValue(userRepository.save(entity), UserDto.class);
+            var userDto = MyModelMapper.convertValue(user, UserDto.class);
+
+            var tokenDto = jwtTokenProvider.createAccessToken(user.getUsername(), user.getRoles());
+            loginResponseDto = authServices.generateLoginResponseDto(userDto, tokenDto);
+
+            return ResponseEntity.ok().body(loginResponseDto);
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid email or password.");
+        }
     }
 
     public void delete(String id) {
 
-        var entity = userRepository.findById(id).orElseThrow(NullPointerException::new);
+        var entity = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User not found"));
         userRepository.delete(entity);
     }
 }

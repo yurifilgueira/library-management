@@ -1,23 +1,22 @@
-package com.library.dto;
+package com.library.entities.dto.requests;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class LoanDto implements Serializable {
+public class LoanRequestDto {
 
     private String id;
-    private UserDto user;
-    private BookDto book;
+    private String customerId;
+    private String bookId;
     private Date loanDate;
     private Date dueDate;
 
-    public LoanDto() {
+    public LoanRequestDto() {
     }
 
-    public LoanDto(String id, UserDto user, BookDto book, Date loanDate, Date dueDate) {
+    public LoanRequestDto(String id, String customerId, String bookId, Date loanDate, Date dueDate) {
         this.id = id;
-        this.user = user;
-        this.book = book;
+        this.customerId = customerId;
+        this.bookId = bookId;
         this.loanDate = loanDate;
         this.dueDate = dueDate;
     }
@@ -30,20 +29,20 @@ public class LoanDto implements Serializable {
         this.id = id;
     }
 
-    public UserDto getUser() {
-        return user;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
-    public BookDto getBook() {
-        return book;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void setBook(BookDto book) {
-        this.book = book;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public Date getLoanDate() {

@@ -1,7 +1,8 @@
 package com.library.services;
 
-import com.library.dto.BookDto;
-import com.library.entities.Book;
+import com.library.entities.dto.BookDto;
+import com.library.entities.model.Book;
+import com.library.exceptions.ObjectNotFoundException;
 import com.library.modelMapper.MyModelMapper;
 import com.library.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class BookService {
     }
 
     public BookDto findById(String id) {
-        var book = bookRepository.findById(id).orElseThrow(NullPointerException::new);
+        var book = bookRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Book Not Found"));
         return MyModelMapper.convertValue(book, BookDto.class);
     }
 
@@ -31,7 +32,7 @@ public class BookService {
     }
 
     public BookDto update(BookDto bookDto) {
-        var entity = bookRepository.findById(bookDto.getId()).orElseThrow(NullPointerException::new);
+        var entity = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new ObjectNotFoundException("Book Not Found"));
 
         entity.setTitle(bookDto.getTitle());
         entity.setAuthor(bookDto.getAuthor());
@@ -41,7 +42,7 @@ public class BookService {
     }
 
     public void delete(String id) {
-        var entity = bookRepository.findById(id).orElseThrow(NullPointerException::new);
+        var entity = bookRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Book Not Found"));
         bookRepository.delete(entity);
     }
 }

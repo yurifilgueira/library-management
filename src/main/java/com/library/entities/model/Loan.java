@@ -1,4 +1,4 @@
-package com.library.entities;
+package com.library.entities.model;
 
 import jakarta.persistence.*;
 
@@ -19,7 +19,7 @@ public class Loan implements Serializable {
     private String id;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User customer;
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
@@ -31,9 +31,9 @@ public class Loan implements Serializable {
     public Loan() {
     }
 
-    public Loan(String id, User user, Book book, Date loanDate, Date dueDate) {
+    public Loan(String id, User customer, Book book, Date loanDate, Date dueDate) {
         this.id = id;
-        this.user = user;
+        this.customer = customer;
         this.book = book;
         this.loanDate = loanDate;
         this.dueDate = dueDate;
@@ -47,12 +47,12 @@ public class Loan implements Serializable {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(User customer) {
+        this.customer = customer;
     }
 
     public Book getBook() {

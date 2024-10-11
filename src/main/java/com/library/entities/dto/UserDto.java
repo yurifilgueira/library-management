@@ -1,8 +1,7 @@
-package com.library.dto;
+package com.library.entities.dto;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class UserDto implements Serializable {
 
